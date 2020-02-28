@@ -12,10 +12,21 @@ import {
   useHistory,
   useLocation
 } from "react-router-dom";
+import Dashboard from './Dashboard.js';
 
 function App() {
   return (
-    <Login></Login>
+    <BrowserRouter>
+    <Switch>
+
+    <Route exact={true} path='/' render={()=> <Login/>}/>
+    <Route exact={true} path='/dashboard' render={()=> <Dashboard/>}/>
+
+
+    </Switch>
+      
+    </BrowserRouter>
+    
   );
 }
 
