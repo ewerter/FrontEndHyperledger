@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import fetchData from './utils/fetchData'
 import './login.css'
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import {
@@ -15,11 +16,16 @@ import {
 import Dashboard from './Dashboard.js';
 
 function App() {
+
+  
+
   return (
     <BrowserRouter>
     <Switch>
 
     <Route exact={true} path='/' render={()=> <Login/>}/>
+    <Route exact={true} path='/testAPI' render={()=> <API/>}/>
+
     <Route exact={true} path='/dashboard' render={()=> <Dashboard/>}/>
 
 
@@ -42,7 +48,9 @@ function Login(props){
     event.preventDefault();
   }
   return(
+
     <div className="Login">
+      
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
           <FormLabel>Email</FormLabel>
@@ -69,4 +77,37 @@ function Login(props){
   );
 }
 
+
+function API(){
+  const [setAPIResponse, apiResponse] = React.useState('')
+
+ const onClick = ()=>{
+  fetch('http://localhost:9000/testAPI')
+  .then(
+  function(response){
+    return response.text();
+})
+.then(function(jsonData){
+    return JSON.stringify(jsonData);
+}
+).then(function(jsonStr){
+    console.log(jsonStr);
+    setAPIResponse(jsonStr)
+});
+  }
+  
+  
+  
+  return(
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo"/>
+        <h1 className="App-title">Welcome to React</h1>
+        <button onClick={onClick}></button>
+      </header>
+   
+
+    </div>
+  )
+}
 export default App;
