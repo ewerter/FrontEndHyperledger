@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import fetchData from './utils/fetchData'
@@ -14,6 +14,7 @@ import {
   useLocation
 } from "react-router-dom";
 import Dashboard from './Dashboard.js';
+import { isArray } from 'util';
 
 function App() {
 
@@ -79,10 +80,10 @@ function Login(props){
 
 
 function API(){
-  const [setAPIResponse, apiResponse] = React.useState('')
-
- const onClick = ()=>{
-  fetch('http://localhost:9000/testAPI')
+ const [ apiResponse, setAPIResponse] = React.useState([])
+ 
+ React.useEffect(()=>{
+  fetch('http://localhost:9000/query')
   .then(
   function(response){
     return response.text();
@@ -94,7 +95,9 @@ function API(){
     console.log(jsonStr);
     setAPIResponse(jsonStr)
 });
-  }
+ },[apiResponse]) 
+ 
+  
   
   
   
@@ -103,9 +106,14 @@ function API(){
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
         <h1 className="App-title">Welcome to React</h1>
-        <button onClick={onClick}></button>
       </header>
-   
+    
+        <ul>
+          
+          <li key={apiResponse.Key}>{apiResponse.Record}</li>
+        </ul>
+        {apiResponse}
+      
 
     </div>
   )

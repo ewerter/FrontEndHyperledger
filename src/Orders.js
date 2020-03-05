@@ -35,11 +35,11 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Recent Transactions</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
+            <TableCell>Address</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Ship To</TableCell>
             <TableCell>Payment Method</TableCell>
@@ -47,6 +47,10 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
+          <TableRow>
+            <API/>
+          </TableRow>
+          
           {rows.map(row => (
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
@@ -65,4 +69,34 @@ export default function Orders() {
       </div>
     </React.Fragment>
   );
+
+  function API(){
+    const [ apiResponse, setAPIResponse] = React.useState([])
+    
+    React.useEffect(()=>{
+     fetch('http://localhost:9000/query')
+     .then(
+     function(response){
+       return response.text();
+   })
+   .then(function(jsonData){
+       return JSON.stringify(jsonData);
+   }
+   ).then(function(jsonStr){
+       console.log(jsonStr);
+       setAPIResponse(jsonStr)
+   });
+    },[apiResponse]) 
+    
+     
+     
+     
+     
+     return(
+       
+         <TableRow key={apiResponse.Key}>
+              <TableCell>{apiResponse}</TableCell>
+              </TableRow>
+     )
+   }
 }
