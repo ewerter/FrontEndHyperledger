@@ -14,6 +14,7 @@ import {
   useLocation
 } from "react-router-dom";
 import Dashboard from './Dashboard.js';
+import TransferOwnership from './TransferOwnership';
 import { isArray } from 'util';
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
     <Route exact={true} path='/testAPI' render={()=> <API/>}/>
 
     <Route exact={true} path='/dashboard' render={()=> <Dashboard/>}/>
-
+    <Route exact={true} path='/transferownership' render={()=> <TransferOwnership/>}/>
 
     </Switch>
       
