@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -20,35 +20,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import firebase from 'firebase-admin';
 
 function createData(property, price, owner, previousOwner, date) {
   return { property, price, owner, previousOwner, date };
-}
-
-let admin = require('firebase-admin');
-let serviceAccount = require("path/to/serviceAccountKey.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://hyperledger-landregister.firebaseio.com"
-  });
-
-function displayData(id){
-    const [error, setError] = React.useState(false)
-    const [loading, setLoading] = React.useState(true)
-    const [lands, setLands] = React.useState([])
-
-    useEffect(() =>{
-        const data = firebase.firestore().collection('lands').doc(id).onSnapshot(snapshot => {const lands = [] 
-            snapshot.forEach(doc => { lands.push(doc) }) 
-            setLoading(false), 
-            setLands(lands) },
-            err => { setError(err)})
-    }, [id])
-    return{
-        error,
-        loading,
-        lands,
-    }
 }
 
 const rows = [
@@ -94,11 +69,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'property', numeric: false, disablePadding: true, label: 'Property' },
+  { id: 'price', numeric: true, disablePadding: false, label: 'Price (CAD)' },
+  { id: 'owner', numeric:false, disablePadding: false, label: 'Current Owner' },
+  { id: 'previousOwner', numeric: false, disablePadding: false, label: 'Previous Owner' },
+  { id: 'date', numeric: true, disablePadding: false, label: 'Purchase Date' },
 ];
 
 function EnhancedTableHead(props) {
@@ -115,7 +90,7 @@ function EnhancedTableHead(props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
+            inputProps={{ 'aria-label': 'select all proposals' }}
           />
         </TableCell>
         {headCells.map(headCell => (
@@ -190,7 +165,7 @@ const EnhancedTableToolbar = props => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Nutrition
+          Pending Proposals
         </Typography>
       )}
 
@@ -242,7 +217,7 @@ const useStyles = makeStyles(theme => ({
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('price');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
