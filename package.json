@@ -10,7 +10,7 @@
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
     "clsx": "^1.1.0",
-    "firebase": "^7.10.0",
+    "firebase": "^10.9.0",
     "firebase-admin": "^8.9.2",
     "firebase-app": "0.0.1",
     "firebase-auth": "^0.1.2",
